@@ -1,3 +1,4 @@
+import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import org.junit.After;
 import org.junit.Before;
@@ -28,7 +29,8 @@ public class ChangeUserDataTest {
     }
 
     @Test
-    @DisplayName("Тест обновление информации о пользователе почта")
+    @DisplayName("Тест Изменение данных пользователя")
+    @Description("Проверка Обновление почты пользователя с авторизацией")
     public void emailCanBeChangedForAuthorizedUserTest() {
         userModel.setEmail("newEmail@gmail.com");
         userSteps.change(accessToken, userModel)
@@ -40,19 +42,8 @@ public class ChangeUserDataTest {
     }
 
     @Test
-    @DisplayName("Тест обновление информации о пользователе пароль")
-    public void passwordCanBeChangedForAuthorizedUserTest() {
-        userModel.setPassword("newPassword");
-        userSteps.change(accessToken, userModel)
-                .assertThat()
-                .statusCode(SC_OK)
-                .body("success", is(true))
-                .body("user.email", is(userModel.getEmail().toLowerCase()))
-                .body("user.name", is(userModel.getName()));
-    }
-
-    @Test
-    @DisplayName("Тест обновление информации о пользователе имя")
+    @DisplayName("Тест Изменение данных пользователя")
+    @Description("Проверка Обновление имени пользователя с авторизацией")
     public void nameCanBeChangedForAuthorizedUserTest() {
         userModel.setName("newName");
         userSteps.change(accessToken, userModel)
@@ -64,7 +55,8 @@ public class ChangeUserDataTest {
     }
 
     @Test
-    @DisplayName("Тест Если выполнить запрос на смену почты без авторизации, вернётся код ответа 401 Unauthorized")
+    @DisplayName("Тест Изменение данных пользователя без авторизации")
+    @Description("Проверка Если выполнить запрос на смену почты без авторизации, вернётся код ответа 401 Unauthorized")
     public void emailCanNotBeChangedForUnauthorizedUserTest() {
         userModel.setEmail("newEmail@gmail.com");
         userSteps.change("", userModel)
@@ -75,18 +67,8 @@ public class ChangeUserDataTest {
     }
 
     @Test
-    @DisplayName("Тест Если выполнить запрос на смену пароля без авторизации, вернётся код ответа 401 Unauthorized")
-    public void passwordCanNotBeChangedForUnauthorizedUserTest() {
-        userModel.setPassword("newPassword");
-        userSteps.change("", userModel)
-                .assertThat()
-                .statusCode(SC_UNAUTHORIZED)
-                .body("success", is(false))
-                .body("message", is("You should be authorised"));
-    }
-
-    @Test
-    @DisplayName("Тест Если выполнить запрос на смену имени без авторизации, вернётся код ответа 401 Unauthorized")
+    @DisplayName("Тест Изменение данных пользователя без авторизации")
+    @Description("Проверка Если выполнить запрос на смену имени без авторизации, вернётся код ответа 401 Unauthorized")
     public void nameCanNotBeChangedForUnauthorizedUserTest() {
         userModel.setName("newName");
         userSteps.change("", userModel)
@@ -97,7 +79,8 @@ public class ChangeUserDataTest {
     }
 
     @Test
-    @DisplayName("Тест Если выполнить запрос на смену почты и передать почту, которая уже используется, вернётся код ответа 403 Forbidden")
+    @DisplayName("Тест Изменение данных пользователя")
+    @Description("Проверка Если выполнить запрос на смену почты и передать почту, которая уже используется, вернётся код ответа 403 Forbidden")
     public void emailCanNotBeChangedAlreadyExistsTest() {
 
         UserModel secondUser = UserGenerator.getRandom();

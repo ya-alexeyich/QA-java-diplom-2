@@ -1,4 +1,5 @@
 import ingredient.IngredientModel;
+import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import org.junit.After;
 import org.junit.Before;
@@ -24,7 +25,7 @@ public class GetOrdersUserTest {
         IngredientSteps ingredientSteps = new IngredientSteps();
         orderSteps = new OrderSteps();
         List<IngredientModel> ingredientsModel = ingredientSteps.getIngredientList();
-        orderSteps.create(accessToken, List.of(ingredientsModel.get(0).get_id(), ingredientsModel.get(1).get_id()));
+        orderSteps.create(accessToken, List.of(ingredientsModel.get(0).getId(), ingredientsModel.get(1).getId()));
     }
 
     @After
@@ -35,7 +36,8 @@ public class GetOrdersUserTest {
     }
 
     @Test
-    @DisplayName("Тест Получить заказы конкретного пользователя")
+    @DisplayName("Тест Получить заказы конкретного авторизованного пользователя")
+    @Description("Проверка кода и тела ответа получение заказов конкретного авторизованного пользователя")
     public void getOrdersForAuthUserTest() {
         orderSteps.getAllOrders(accessToken)
                 .assertThat()
@@ -45,7 +47,8 @@ public class GetOrdersUserTest {
     }
 
     @Test
-    @DisplayName("Тест Если выполнить запрос получить заказы без авторизации, вернётся код ответа 401 Unauthorized")
+    @DisplayName("Тест Получить заказы конкретного неавторизованного пользователя")
+    @Description("Проверка Если выполнить запрос получить заказы без авторизации, вернётся код ответа 401 Unauthorized")
     public void canNotGetOrdersForNotAuthUserTest() {
         orderSteps.getAllOrders("")
                 .assertThat()

@@ -1,4 +1,5 @@
 import ingredient.IngredientModel;
+import io.qameta.allure.Description;
 import io.qameta.allure.junit4.DisplayName;
 import org.junit.After;
 import org.junit.Before;
@@ -35,9 +36,10 @@ public class CreateOrderTest {
     }
 
     @Test
-    @DisplayName("Тест Создание заказа с авторизацией")
+    @DisplayName("Тест Создание заказа с ингредиентами")
+    @Description("Проверка с авторизацией кода и тела ответа при успешном создание заказа с ингредиентами")
     public void orderCanBeCreateWithIngredientsAndAuthTest() {
-        orderSteps.create(accessToken, List.of(ingredientsModel.get(0).get_id(), ingredientsModel.get(1).get_id()))
+        orderSteps.create(accessToken, List.of(ingredientsModel.get(0).getId(), ingredientsModel.get(1).getId()))
                 .assertThat()
                 .statusCode(SC_OK)
                 .body("success", is(true))
@@ -46,7 +48,8 @@ public class CreateOrderTest {
     }
 
     @Test
-    @DisplayName("Тест При создании заказа если не передать ни один ингредиент, вернётся код ответа 400 Bad Request")
+    @DisplayName("Тест Создание заказа без ингредиентов")
+    @Description("Проверка При создании заказа с авторизацией если не передать ни один ингредиент, вернётся код ответа 400 Bad Request")
     public void orderCanBeCreateWithoutIngredientsAndAuthTest() {
         orderSteps.create(accessToken, null)
                 .assertThat()
@@ -56,17 +59,19 @@ public class CreateOrderTest {
     }
 
     @Test
-    @DisplayName("Тест При создании заказа если в запросе передан невалидный хеш ингредиента, вернётся код ответа 500 Internal Server Error")
+    @DisplayName("Тест Создание заказа с неверным хешем ингредиентов")
+    @Description("Проверка При создании заказа с авторизацией если в запросе передан невалидный хеш ингредиента, вернётся код ответа 500 Internal Server Error")
     public void orderCanBeCreateWithIncorrectHashIngredientAndAuthTest() {
-        orderSteps.create(accessToken, List.of("incorrectHash", ingredientsModel.get(2).get_id()))
+        orderSteps.create(accessToken, List.of("incorrectHash", ingredientsModel.get(2).getId()))
                 .assertThat()
                 .statusCode(SC_INTERNAL_SERVER_ERROR);
     }
 
     @Test
-    @DisplayName("Тест Создание заказа без авторизации")
+    @DisplayName("Тест Создание заказа без авторизации с ингредиентами")
+    @Description("Проверка без авторизации кода и тела ответа при успешном создание заказа с ингредиентами")
     public void orderCanBeCreateWithIngredientsAndNotAuthTest() {
-        orderSteps.create("", List.of(ingredientsModel.get(3).get_id(), ingredientsModel.get(4).get_id()))
+        orderSteps.create("", List.of(ingredientsModel.get(3).getId(), ingredientsModel.get(4).getId()))
                 .assertThat()
                 .statusCode(SC_OK)
                 .body("success", is(true))
@@ -75,7 +80,8 @@ public class CreateOrderTest {
     }
 
     @Test
-    @DisplayName("Тест При создании заказа если не передать ни один ингредиент, вернётся код ответа 400 Bad Request")
+    @DisplayName("Тест Создание заказа без авторизации без ингредиентов")
+    @Description("Проверка При создании заказа без авторизации если не передать ни один ингредиент, вернётся код ответа 400 Bad Request")
     public void orderCanBeCreateWithoutIngredientsAndNotAuthTest() {
         orderSteps.create("", null)
                 .assertThat()
@@ -85,9 +91,10 @@ public class CreateOrderTest {
     }
 
     @Test
-    @DisplayName("Тест При создании заказа если в запросе передан невалидный хеш ингредиента, вернётся код ответа 500 Internal Server Error")
+    @DisplayName("Тест Создание заказа без авторизации с неверным хешем ингредиентов")
+    @Description("Проверка При создании заказа без авторизации если в запросе передан невалидный хеш ингредиента, вернётся код ответа 500 Internal Server Error")
     public void orderCanBeCreateWithIncorrectHashIngredientNotAuthTest() {
-        orderSteps.create("", List.of(ingredientsModel.get(5).get_id(), "incorrectHash"))
+        orderSteps.create("", List.of(ingredientsModel.get(5).getId(), "incorrectHash"))
                 .assertThat()
                 .statusCode(SC_INTERNAL_SERVER_ERROR);
     }
